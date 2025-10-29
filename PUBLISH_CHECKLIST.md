@@ -8,9 +8,9 @@
 
 需要将以下占位符替换为你的真实信息：
 
-- [ ] `yourusername` → 你的GitHub用户名
-- [ ] `qinglong-cookie-sync` → 你的仓库名称（或保持不变）
-- [ ] `your.email@example.com` → 你的真实邮箱
+- [x] `qnloft` → 你的GitHub用户名 ✅
+- [x] `qnloft-qinglong-chrome-extension` → 你的仓库名称 ✅
+- [x] `qnloft@gmail.com` → 你的真实邮箱 ✅
 
 **需要修改的位置：**
 
@@ -19,7 +19,7 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/yourusername/qinglong-cookie-sync)
 
 # 第152行 - 克隆命令
-git clone https://github.com/yourusername/qinglong-cookie-sync.git
+git clone https://github.com/qnloft/qnloft-qinglong-chrome-extension.git
 
 # 第411行 - Issues链接
 - 📋 问题反馈：[GitHub Issues](https://github.com/yourusername/qinglong-cookie-sync/issues)
@@ -73,9 +73,9 @@ sed -i '' 's/your\.email@example\.com/你的邮箱/g' README.md
 
 ### 5. 可选但建议添加的文件
 
-- [ ] CHANGELOG.md - 更新日志（详细版本历史）
-- [ ] CONTRIBUTING.md - 贡献指南
-- [x] PUBLISH_CHECKLIST.md - 本检查清单
+- [x] CHANGELOG.md - 更新日志（详细版本历史） ✅
+- [x] CONTRIBUTING.md - 贡献指南 ✅
+- [x] PUBLISH_CHECKLIST.md - 本检查清单 ✅
 
 ---
 
@@ -85,17 +85,17 @@ sed -i '' 's/your\.email@example\.com/你的邮箱/g' README.md
 
 发布后建议设置：
 
-- [ ] 添加仓库描述
-- [ ] 添加主题标签（Topics）：
-  - `chrome-extension`
-  - `qinglong`
-  - `cookie-sync`
-  - `browser-extension`
-  - `javascript`
-- [ ] 设置仓库主页URL（可选）：https://qnloft.com/
-- [ ] 启用Issues功能
-- [ ] 启用Discussions功能（可选）
-- [ ] 添加Star按钮提示
+- [x] 添加仓库描述 ✅
+- [x] 添加主题标签（Topics）：
+  - `chrome-extension` ✅
+  - `qinglong` ✅
+  - `cookie-sync` ✅
+  - `browser-extension` ✅
+  - `javascript` ✅
+- [x] 设置仓库主页URL：https://qnloft.com/ ✅
+- [x] 启用Issues功能 ✅
+- [x] 启用Discussions功能（可选） ✅
+- [x] 添加Star按钮提示 ✅
 
 ### 7. 分支保护（可选）
 
@@ -166,8 +166,8 @@ git push -u origin main
 
 ### 4. 发布后的优化
 
-- [ ] 在GitHub仓库页面添加描述和标签
-- [ ] 创建第一个Release版本（v1.0.0）
+- [x] 在GitHub仓库页面添加描述和标签 ✅
+- [x] 创建第一个Release版本（v1.0.0） ✅
 - [ ] 在README顶部添加项目演示GIF（可选）
 - [ ] 在社交媒体宣传项目
 

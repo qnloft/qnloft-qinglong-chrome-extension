@@ -1,6 +1,6 @@
 # qnloft-青龙助手
 
-一个Chrome浏览器扩展，自动将网站Cookie同步到青龙面板，支持多网站配置和完整的环境变量管理。
+> 一个Chrome浏览器扩展，自动将网站Cookie同步到青龙面板，支持多网站配置和完整的环境变量管理。
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/qnloft/qnloft-qinglong-chrome-extension)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -179,6 +179,7 @@ cd qnloft-qinglong-chrome-extension
 - 输入Client ID和Client Secret
   - 在青龙面板：系统设置 → 应用设置 → 创建应用
 - 点击"测试连接"验证配置
+![同步日志](screenshots/如何在青龙面板中获取配置.png)
 
 #### 步骤2：添加网站配置
 - 网站名称：自定义名称（如：京东）
