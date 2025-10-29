@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配置向导 - 青龙Cookie同步助手</title>
+    <link rel="stylesheet" href="wizard.css">
+</head>
+<body>
+    <div class="wizard-container">
+        <!-- 步骤指示器 -->
+        <div class="steps-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">欢迎</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">青龙面板</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">网站配置</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">完成</div>
+            </div>
+        </div>
+
+        <!-- 步骤内容 -->
+        <div class="wizard-content">
+            <!-- 步骤1: 欢迎 -->
+            <div class="wizard-step active" data-step="1">
+                <div class="welcome-section">
+                    <svg class="welcome-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        <path d="M3.22 12h17.56M12 3.22v17.56"/>
+                    </svg>
+                    <h1 class="welcome-title">欢迎使用青龙Cookie同步助手</h1>
+                    <p class="welcome-desc">
+                        感谢安装本扩展！我们将引导您完成初始配置，只需几个简单步骤即可开始使用。
+                    </p>
+                    
+                    <div class="features">
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                            </svg>
+                            <div class="feature-text">
+                                <h3>自动同步</h3>
+                                <p>自动获取Cookie并同步到青龙面板</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="2" y1="12" x2="22" y2="12"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                            <div class="feature-text">
+                                <h3>多网站支持</h3>
+                                <p>支持配置多个网站的Cookie同步</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <div class="feature-text">
+                                <h3>安全可靠</h3>
+                                <p>敏感信息加密存储，保护您的数据安全</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步骤2: 青龙面板配置 -->
+            <div class="wizard-step" data-step="2">
+                <h2 class="step-title">配置青龙面板连接</h2>
+                <p class="step-desc">请输入您的青龙面板连接信息</p>
+                
+                <form id="qinglongForm" class="form">
+                    <div class="form-group">
+                        <label class="form-label">青龙面板URL *</label>
+                        <input type="url" id="qlUrl" class="form-input" 
+                               placeholder="http://your-panel-url:5700" required>
+                        <span class="form-hint">例如: http://192.168.1.100:5700</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Client ID *</label>
+                        <input type="text" id="clientId" class="form-input" 
+                               placeholder="请输入Client ID" required>
+                        <span class="form-hint">在青龙面板的"系统设置 → 应用设置"中获取</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Client Secret *</label>
+                        <input type="password" id="clientSecret" class="form-input" 
+                               placeholder="请输入Client Secret" required>
+                        <span class="form-hint">此信息将加密存储</span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="testConnectionBtn" class="btn btn-secondary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="m21 21-4.35-4.35"/>
+                            </svg>
+                            测试连接
+                        </button>
+                    </div>
+                </form>
+
+                <div id="connectionResult" class="alert hidden"></div>
+            </div>
+
+            <!-- 步骤3: 网站配置 -->
+            <div class="wizard-step" data-step="3">
+                <h2 class="step-title">添加第一个网站配置</h2>
+                <p class="step-desc">配置需要同步Cookie的网站（稍后可在设置中添加更多）</p>
+                
+                <form id="siteForm" class="form">
+                    <div class="form-group">
+                        <label class="form-label">网站名称 *</label>
+                        <input type="text" id="siteName" class="form-input" 
+                               placeholder="例如: 京东" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">目标URL *</label>
+                        <input type="url" id="siteUrl" class="form-input" 
+                               placeholder="https://example.com" required>
+                        <span class="form-hint">插件将从此URL获取Cookie</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">青龙环境变量名称 *</label>
+                        <input type="text" id="envName" class="form-input" 
+                               placeholder="例如: JD_COOKIE" required>
+                        <span class="form-hint">Cookie将保存到此环境变量</span>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="siteEnabled" checked>
+                            <span>启用此网站</span>
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" id="autoSync" checked>
+                            <span>启用自动同步</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 步骤4: 完成 -->
+            <div class="wizard-step" data-step="4">
+                <div class="complete-section">
+                    <svg class="complete-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <h2 class="complete-title">配置完成！</h2>
+                    <p class="complete-desc">
+                        您已成功完成初始配置，现在可以开始使用青龙Cookie同步助手了。
+                    </p>
+                    
+                    <div class="summary-card">
+                        <h3 class="summary-title">配置摘要</h3>
+                        <div class="summary-item">
+                            <span class="summary-label">青龙面板:</span>
+                            <span class="summary-value" id="summaryQlUrl">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">网站名称:</span>
+                            <span class="summary-value" id="summarySiteName">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">环境变量:</span>
+                            <span class="summary-value" id="summaryEnvName">-</span>
+                        </div>
+                    </div>
+
+                    <div class="next-steps">
+                        <h3 class="next-steps-title">接下来...</h3>
+                        <ul class="next-steps-list">
+                            <li>✓ 访问目标网站并登录</li>
+                            <li>✓ 点击扩展图标，手动触发首次同步</li>
+                            <li>✓ 在设置中添加更多网站配置</li>
+                        </ul>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="syncNow">
+                            <span>完成后立即执行同步</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航按钮 -->
+        <div class="wizard-nav">
+            <button id="prevBtn" class="btn btn-secondary" style="visibility: hidden;">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                上一步
+            </button>
+            <button id="nextBtn" class="btn btn-primary">
+                下一步
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+            <button id="finishBtn" class="btn btn-success hidden">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                完成配置
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading 遮罩 -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p class="loading-text">处理中...</p>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="wizard.js" type="module"></script>
+</body>
+</html>
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qnloft-青龙助手</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1 class="title">qnloft-青龙助手</h1>
+            <div class="header-actions">
+                <button id="refreshBtn" class="icon-btn" title="刷新">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                </button>
+                <button id="settingsBtn" class="icon-btn" title="设置">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 1v6m0 6v6m-9-9h6m6 0h6m-2.7-6.6 4.2-4.2M4.5 4.5l4.2 4.2m8.6 8.6 4.2 4.2M4.5 19.5l4.2-4.2"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 同步状态卡片 -->
+        <div class="status-card">
+            <div class="status-header">
+                <span class="status-label">同步状态</span>
+                <span id="statusIndicator" class="status-indicator pending">
+                    <span class="status-dot"></span>
+                    <span class="status-text">待同步</span>
+                </span>
+            </div>
+            <div class="status-info">
+                <div class="info-item">
+                    <span class="info-label">最后同步:</span>
+                    <span id="lastSyncTime" class="info-value">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">成功网站:</span>
+                    <span id="successCount" class="info-value">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="actions">
+            <button id="syncAllBtn" class="btn btn-primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                立即同步所有
+            </button>
+        </div>
+
+        <!-- 网站列表 -->
+        <div class="sites-section">
+            <div class="section-header">
+                <h2 class="section-title">网站配置</h2>
+                <span id="sitesCount" class="count-badge">0</span>
+            </div>
+
+            <!-- 空状态 -->
+            <div id="emptyState" class="empty-state">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2m-6 9 2 2 4-4"/>
+                </svg>
+                <p class="empty-text">还没有配置网站</p>
+                <button id="addSiteBtn" class="btn btn-secondary">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14m-7-7h14"/>
+                    </svg>
+                    添加网站
+                </button>
+            </div>
+
+            <!-- 网站列表 -->
+            <div id="sitesList" class="sites-list hidden">
+                <!-- 网站项将通过JS动态生成 -->
+            </div>
+        </div>
+
+        <!-- 底部信息 -->
+        <footer class="footer">
+            <div class="footer-stats">
+                <span class="stat-item">
+                    <span class="stat-label">今日同步:</span>
+                    <span id="todayCount" class="stat-value">0</span>
+                </span>
+                <span class="stat-item">
+                    <span class="stat-label">成功率:</span>
+                    <span id="successRate" class="stat-value">-</span>
+                </span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading 遮罩 -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p class="loading-text">同步中...</p>
+    </div>
+
+    <!-- Toast 通知 -->
+    <div id="toast" class="toast hidden">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="popup.js" type="module"></script>
+</body>
+</html>
+

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成插件图标</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1976D2;
+            margin-bottom: 20px;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            align-items: flex-start;
+        }
+        .icon-item {
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        button {
+            background: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1565C0;
+        }
+        .instructions {
+            background: #E3F2FD;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 青龙Cookie同步助手 - 图标生成器</h1>
+        
+        <div class="instructions">
+            <strong>使用说明：</strong>
+            <ol>
+                <li>点击下方对应的"下载"按钮保存图标到 <code>assets/icons/</code> 目录</li>
+                <li>确保文件名分别为：icon-16.png、icon-48.png、icon-128.png</li>
+                <li>生成完成后可以删除此HTML文件</li>
+            </ol>
+        </div>
+
+        <div class="icon-preview">
+            <div class="icon-item">
+                <h3>16x16</h3>
+                <canvas id="icon16" width="16" height="16"></canvas>
+                <br>
+                <button onclick="downloadIcon('icon16', 'icon-16.png')">下载 16x16</button>
+            </div>
+            
+            <div class="icon-item">
+                <h3>48x48</h3>
+                <canvas id="icon48" width="48" height="48"></canvas>
+                <br>
+                <button onclick="downloadIcon('icon48', 'icon-48.png')">下载 48x48</button>
+            </div>
+            
+            <div class="icon-item">
+                <h3>128x128</h3>
+                <canvas id="icon128" width="128" height="128"></canvas>
+                <br>
+                <button onclick="downloadIcon('icon128', 'icon-128.png')">下载 128x128</button>
+            </div>
+        </div>
+
+        <button onclick="downloadAllIcons()" style="background: #4CAF50; font-size: 16px; padding: 12px 30px;">
+            📥 一键下载所有图标
+        </button>
+    </div>
+
+    <script>
+        // 绘制图标的函数
+        function drawIcon(canvasId, size) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            
+            // 背景渐变
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#1976D2');
+            gradient.addColorStop(1, '#1565C0');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // 绘制"QL"文字（青龙缩写）
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('QL', size / 2, size / 2);
+            
+            // 绘制小圆点装饰
+            ctx.fillStyle = '#4CAF50';
+            const dotSize = size * 0.08;
+            ctx.beginPath();
+            ctx.arc(size * 0.85, size * 0.15, dotSize, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // 下载单个图标
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // 下载所有图标
+        function downloadAllIcons() {
+            setTimeout(() => downloadIcon('icon16', 'icon-16.png'), 0);
+            setTimeout(() => downloadIcon('icon48', 'icon-48.png'), 300);
+            setTimeout(() => downloadIcon('icon128', 'icon-128.png'), 600);
+            alert('所有图标下载已开始！请将下载的文件移动到 assets/icons/ 目录下');
+        }
+
+        // 页面加载时绘制所有图标
+        window.onload = function() {
+            drawIcon('icon16', 16);
+            drawIcon('icon48', 48);
+            drawIcon('icon128', 128);
+        };
+    </script>
+</body>
+</html>
+
