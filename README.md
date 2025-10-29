@@ -2,6 +2,8 @@
 
 > 一个Chrome浏览器扩展，自动将网站Cookie同步到青龙面板，支持多网站配置和完整的环境变量管理。
 
+**青龙面板相关教程**：[安装配置指南-新手必看](https://blog.qnloft.com/archives/QF8lIdsd/) | [脚本优选](https://blog.qnloft.com/archives/mfcafo1h/)
+
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/qnloft/qnloft-qinglong-chrome-extension)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -349,6 +351,7 @@ qnloft-qinglong-chrome-extension/
     └── icons/             # 图标
 ```
 
+---
 ## 🐛 故障排除
 
 ### 同步失败
@@ -380,6 +383,7 @@ qnloft-qinglong-chrome-extension/
 4. 确保青龙面板可访问
 5. 检查防火墙设置
 
+---
 ## 🔄 更新日志
 
 ### v1.0.0 (2024-01-01)
@@ -392,11 +396,11 @@ qnloft-qinglong-chrome-extension/
 
 ## 📝 待办事项
 
-- [ ] 支持更多认证方式
-- [ ] 添加同步规则配置
+- [ ] 配置导出和导入
 - [ ] 支持Cookie过滤
 - [ ] 国际化支持
 - [ ] 主题切换
+- [ ] 更多功能敬请期待....
 
 ## 🤝 贡献
 

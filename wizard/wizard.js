@@ -60,7 +60,10 @@ const elements = {
     // 通用
     loadingOverlay: document.getElementById('loadingOverlay'),
     toast: document.getElementById('toast'),
-    toastMessage: document.getElementById('toastMessage')
+    toastMessage: document.getElementById('toastMessage'),
+    
+    // 跳过按钮
+    skipWizardBtn: document.getElementById('skipWizardBtn')
 };
 
 /**
@@ -86,6 +89,9 @@ function bindEvents() {
     elements.prevBtn.addEventListener('click', () => goToStep(currentStep - 1));
     elements.nextBtn.addEventListener('click', handleNext);
     elements.finishBtn.addEventListener('click', handleFinish);
+    
+    // 跳过向导
+    elements.skipWizardBtn.addEventListener('click', handleSkipWizard);
     
     // 测试连接
     elements.testConnectionBtn.addEventListener('click', handleTestConnection);
@@ -285,6 +291,38 @@ function updateSummary() {
     elements.summaryQlUrl.textContent = configData.qinglong.qlUrl;
     elements.summarySiteName.textContent = configData.site.name;
     elements.summaryEnvName.textContent = configData.site.envName;
+}
+
+/**
+ * 跳过向导
+ */
+async function handleSkipWizard() {
+    try {
+        showLoading(true);
+        
+        // 显示确认对话框
+        const confirmed = confirm('确定要跳过配置向导吗？\n\n跳过后将直接进入扩展设置页面，您可以稍后手动配置。');
+        
+        if (!confirmed) {
+            showLoading(false);
+            return;
+        }
+        
+        // 标记向导已完成（避免再次显示）
+        await storageManager.setWizardCompleted(true);
+        
+        // 关闭向导页面，打开设置页面
+        chrome.runtime.openOptionsPage();
+        
+        // 关闭当前标签页
+        window.close();
+        
+    } catch (error) {
+        console.error('跳过向导失败:', error);
+        showToast('跳过向导失败，请重试', 'error');
+    } finally {
+        showLoading(false);
+    }
 }
 
 /**
