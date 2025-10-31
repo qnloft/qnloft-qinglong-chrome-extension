@@ -136,7 +136,7 @@ cd qnloft-qinglong-chrome-extension
    - 点击"加载已解压的扩展程序"
    - 选择项目文件夹
 
-![在Chrome中加载扩展](screenshots/chrome.png)
+![在Chrome中加载扩展](screenshots/chrome_op.png)
 
 ### 从Chrome Web Store安装
 
