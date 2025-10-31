@@ -4,6 +4,7 @@ import { storageManager } from './lib/storage-manager.js';
 import { qinglongAPI } from './lib/qinglong-api.js';
 import { cookieManager } from './lib/cookie-manager.js';
 import { logger } from './lib/logger.js';
+import jdHandler from './lib/handlers/jd-handler.js';
 import {
     ALARM_NAMES,
     BADGE,
@@ -216,13 +217,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // 处理异步消息
     handleMessage(request, sender)
-        .then(response => sendResponse(response))
+        .then(response => {
+            console.log('消息处理成功，准备发送响应:', response);
+            sendResponse(response);
+        })
         .catch(error => {
             console.error('消息处理失败:', error);
-            sendResponse({
+            const errorResponse = {
                 success: false,
                 error: error.message
-            });
+            };
+            console.log('发送错误响应:', errorResponse);
+            sendResponse(errorResponse);
         });
 
     return true; // 保持消息通道开启以进行异步响应
@@ -232,6 +238,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
  * 处理消息
  */
 async function handleMessage(request, sender) {
+    console.log('handleMessage 开始处理:', request.action, 'config:', request.config);
+    console.log('handleMessage 完整的 request 对象:', request);
     switch (request.action) {
         case MESSAGE_TYPES.SYNC_NOW:
             return await handleSyncNow();
@@ -240,7 +248,8 @@ async function handleMessage(request, sender) {
             return await handleSyncSite(request.siteId);
 
         case MESSAGE_TYPES.TEST_CONNECTION:
-            return await handleTestConnection();
+            console.log('进入 TEST_CONNECTION 分支');
+            return await handleTestConnection(request.config);
 
         case MESSAGE_TYPES.CHECK_COOKIE:
             return await handleCheckCookie(request.siteId);
@@ -316,8 +325,16 @@ async function handleSyncSite(siteId) {
 /**
  * 处理：测试青龙面板连接
  */
-async function handleTestConnection() {
-    return await qinglongAPI.testConnection();
+async function handleTestConnection(config = null) {
+    console.log('handleTestConnection 被调用，config:', config);
+    try {
+        const result = await qinglongAPI.testConnection(config);
+        console.log('handleTestConnection 返回结果:', result);
+        return result;
+    } catch (error) {
+        console.error('handleTestConnection 发生错误:', error);
+        throw error;
+    }
 }
 
 /**
@@ -354,6 +371,44 @@ async function handleCheckCookie(siteId) {
         const expiredCookies = cookies.filter(c => c.expirationDate && c.expirationDate < now);
         const validCookies = cookies.filter(c => !c.expirationDate || c.expirationDate >= now);
         
+        // 如果是京东域名，额外进行Cookie有效性验证
+        const domain = new URL(site.url).hostname;
+        if (jdHandler.isJDDomain(domain)) {
+            console.log('[检测Cookie] 检测到京东域名，使用京东专用验证');
+            
+            // 获取Cookie字符串
+            const cookieString = await cookieManager.getAllCookies(site.url);
+            
+            // 调用京东验证接口
+            const validation = await jdHandler.validateCookies(cookieString);
+            
+            if (!validation.valid) {
+                return {
+                    success: false,
+                    hasCookies: true,
+                    cookieCount: cookieCount,
+                    validCount: 0,
+                    expiredCount: expiredCookies.length,
+                    isJD: true,
+                    jdValidation: validation,
+                    message: `京东Cookie验证失败: ${validation.reason}`
+                };
+            }
+            
+            // 京东验证成功
+            return {
+                success: true,
+                hasCookies: true,
+                cookieCount: cookieCount,
+                validCount: validCookies.length,
+                expiredCount: expiredCookies.length,
+                isJD: true,
+                jdValidation: validation,
+                message: `京东Cookie有效 (用户: ${validation.data.nickname})`
+            };
+        }
+        
+        // 通用Cookie检测结果
         return {
             success: true,
             hasCookies: true,
@@ -604,12 +659,53 @@ async function syncSite(site) {
 
         console.log(`已获取Cookie，长度: ${cookieString.length}`);
 
-        // 2. 更新到青龙面板
-        await qinglongAPI.upsertEnv(
-            site.envName,
-            cookieString,
-            `由Cookie同步助手更新于 ${new Date().toLocaleString()}`
-        );
+        // 2. 判断是否为京东域名，使用智能匹配
+        const domain = new URL(site.url).hostname;
+        if (jdHandler.isJDDomain(domain)) {
+            console.log(`[同步] 检测到京东域名，使用智能匹配`);
+            
+            // 2.1 验证Cookie有效性（可选，但建议）
+            const validation = await jdHandler.validateCookies(cookieString);
+            if (!validation.valid) {
+                throw new Error(`京东Cookie无效: ${validation.reason}`);
+            }
+            console.log(`[同步] Cookie有效，用户: ${validation.data.nickname}`);
+            
+            // 2.2 获取青龙环境变量列表
+            const envList = await qinglongAPI.getEnvs();
+            
+            // 2.3 智能匹配环境变量
+            const match = await jdHandler.matchQLEnv(envList, cookieString);
+            
+            if (match.matched) {
+                // 找到匹配的环境变量，更新它
+                console.log(`[同步] 找到匹配的环境变量 (ID: ${match.envId})`);
+                
+                // 使用完整的环境变量对象，确保包含所有必要字段（id/_id等）
+                const updateData = {
+                    ...match.env, // 保留原有所有字段
+                    value: cookieString, // 更新值
+                    remarks: `由Cookie同步助手更新于 ${new Date().toLocaleString()} (智能匹配)` // 更新备注
+                };
+                
+                await qinglongAPI.updateEnv(updateData);
+            } else {
+                // 未找到匹配，使用通用逻辑创建新的
+                console.log(`[同步] 未找到匹配的环境变量，创建新的: ${match.reason}`);
+                await qinglongAPI.upsertEnv(
+                    site.envName,
+                    cookieString,
+                    `由Cookie同步助手更新于 ${new Date().toLocaleString()}`
+                );
+            }
+        } else {
+            // 非京东网站，使用通用逻辑
+            await qinglongAPI.upsertEnv(
+                site.envName,
+                cookieString,
+                `由Cookie同步助手更新于 ${new Date().toLocaleString()}`
+            );
+        }
 
         // 3. 更新网站配置
         await storageManager.updateSite(site.id, {
@@ -777,12 +873,53 @@ async function handleSyncSelectedCookies(siteId, cookieNames) {
 
         console.log(`已获取选中Cookie，长度: ${cookieString.length}`);
 
-        // 4. 更新到青龙面板
-        await qinglongAPI.upsertEnv(
-            site.envName,
-            cookieString,
-            `由Cookie同步助手更新于 ${new Date().toLocaleString()} (选中${cookieNames.length}个Cookie)`
-        );
+        // 4. 判断是否为京东域名，使用智能匹配
+        const domain = new URL(site.url).hostname;
+        if (jdHandler.isJDDomain(domain)) {
+            console.log(`[同步选中Cookie] 检测到京东域名，使用智能匹配`);
+            
+            // 4.1 验证Cookie有效性
+            const validation = await jdHandler.validateCookies(cookieString);
+            if (!validation.valid) {
+                throw new Error(`京东Cookie无效: ${validation.reason}`);
+            }
+            console.log(`[同步选中Cookie] Cookie有效，用户: ${validation.data.nickname}`);
+            
+            // 4.2 获取青龙环境变量列表
+            const envList = await qinglongAPI.getEnvs();
+            
+            // 4.3 智能匹配环境变量
+            const match = await jdHandler.matchQLEnv(envList, cookieString);
+            
+            if (match.matched) {
+                // 找到匹配的环境变量，更新它
+                console.log(`[同步选中Cookie] 找到匹配的环境变量 (ID: ${match.envId})`);
+                
+                // 使用完整的环境变量对象，确保包含所有必要字段（id/_id等）
+                const updateData = {
+                    ...match.env, // 保留原有所有字段
+                    value: cookieString, // 更新值
+                    remarks: `由Cookie同步助手更新于 ${new Date().toLocaleString()} (选中${cookieNames.length}个Cookie, 智能匹配)` // 更新备注
+                };
+                
+                await qinglongAPI.updateEnv(updateData);
+            } else {
+                // 未找到匹配，使用通用逻辑创建新的
+                console.log(`[同步选中Cookie] 未找到匹配的环境变量，创建新的: ${match.reason}`);
+                await qinglongAPI.upsertEnv(
+                    site.envName,
+                    cookieString,
+                    `由Cookie同步助手更新于 ${new Date().toLocaleString()} (选中${cookieNames.length}个Cookie)`
+                );
+            }
+        } else {
+            // 非京东网站，使用通用逻辑
+            await qinglongAPI.upsertEnv(
+                site.envName,
+                cookieString,
+                `由Cookie同步助手更新于 ${new Date().toLocaleString()} (选中${cookieNames.length}个Cookie)`
+            );
+        }
 
         // 5. 更新网站配置
         await storageManager.updateSite(site.id, {

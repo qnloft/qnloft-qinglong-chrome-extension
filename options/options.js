@@ -304,23 +304,40 @@ function handleOpenQlPanel() {
  * 测试连接
  */
 async function handleTestConnection() {
+    // 从输入框读取值（可能用户修改了但还没保存）
+    const qlUrl = elements.qlUrl.value.trim();
+    const clientId = elements.clientId.value.trim();
+    const clientSecret = elements.clientSecret.value.trim();
+    
+    if (!qlUrl || !clientId || !clientSecret) {
+        showAlert('请先填写所有必填项', 'error');
+        return;
+    }
+    
     try {
         showLoading(true);
         hideAlert();
         
-        const response = await sendMessage({
-            action: MESSAGE_TYPES.TEST_CONNECTION
-        });
+        // 使用输入框的值进行测试，不保存到storage
+        const messageData = {
+            action: MESSAGE_TYPES.TEST_CONNECTION,
+            config: {
+                qlUrl: qlUrl,
+                clientId: clientId,
+                clientSecret: clientSecret
+            }
+        };
+        const response = await sendMessage(messageData);
         
         if (response.success) {
-            showAlert('连接成功！', 'success');
+            showAlert('✓ 连接成功！', 'success');
         } else {
-            showAlert(`连接失败: ${response.message}`, 'error');
+            showAlert(`✗ 连接失败: ${response.message}`, 'error');
         }
         
     } catch (error) {
         console.error('测试连接失败:', error);
-        showAlert('测试连接失败', 'error');
+        showAlert('✗ 测试连接失败', 'error');
     } finally {
         showLoading(false);
     }

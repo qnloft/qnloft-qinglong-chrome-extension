@@ -291,9 +291,17 @@ function updateSiteData() {
  * 测试连接
  */
 async function handleTestConnection() {
-    updateQinglongData();
+    // 直接从输入框读取值
+    const qlUrl = elements.qlUrl.value.trim();
+    const clientId = elements.clientId.value.trim();
+    const clientSecret = elements.clientSecret.value.trim();
     
-    if (!configData.qinglong.qlUrl || !configData.qinglong.clientId || !configData.qinglong.clientSecret) {
+    console.log('=== testConnection 开始 ===');
+    console.log('qlUrl:', qlUrl);
+    console.log('clientId:', clientId);
+    console.log('clientSecret:', clientSecret);
+    
+    if (!qlUrl || !clientId || !clientSecret) {
         showToast('请先填写所有必填项');
         return;
     }
@@ -302,18 +310,21 @@ async function handleTestConnection() {
         showLoading(true);
         hideAlert();
         
-        // 先保存配置（临时）
-        const encryptedSecret = await cryptoUtils.encrypt(configData.qinglong.clientSecret);
-        await storageManager.updateConfig({
-            qlUrl: configData.qinglong.qlUrl,
-            clientId: configData.qinglong.clientId,
-            clientSecret: encryptedSecret
-        });
+        // 直接使用输入框的值进行测试，不保存到storage
+        const messageData = {
+            action: MESSAGE_TYPES.TEST_CONNECTION,
+            config: {
+                qlUrl: qlUrl,
+                clientId: clientId,
+                clientSecret: clientSecret
+            }
+        };
+        console.log('准备发送消息到后台:', messageData);
+        console.log('messageData.config:', messageData.config);
+        console.log('messageData 完整 JSON:', JSON.stringify(messageData));
+        const response = await sendMessage(messageData);
         
-        // 测试连接
-        const response = await sendMessage({
-            action: MESSAGE_TYPES.TEST_CONNECTION
-        });
+        console.log('测试连接响应数据:', response);
         
         if (response.success) {
             showAlert('✓ 连接成功！', 'success');
@@ -420,8 +431,13 @@ async function handleFinish() {
  * 发送消息到background
  */
 function sendMessage(message) {
+    console.log('sendMessage 函数被调用，参数:', message);
+    console.log('message 的类型:', typeof message);
+    console.log('message 的 keys:', Object.keys(message));
     return new Promise((resolve, reject) => {
+        console.log('准备调用 chrome.runtime.sendMessage，参数:', message);
         chrome.runtime.sendMessage(message, (response) => {
+            console.log('收到后台响应:', response);
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError);
             } else {

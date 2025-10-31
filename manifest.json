@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "qnloft-青龙助手",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "自动同步网站Cookie到青龙面板，支持多网站配置和环境变量管理",
   "icons": {
     "16": "assets/icons/icon-16.png",
