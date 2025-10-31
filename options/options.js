@@ -238,15 +238,16 @@ async function loadQinglongConfig() {
     elements.qlUrl.value = config.qlUrl || '';
     elements.clientId.value = config.clientId || '';
     
-    // Client Secret需要解密
+    // Client Secret处理
+    // 注意：storageManager.getConfig() 已经尝试解密了，如果成功则已经是明文
+    // 如果解密失败或不是加密格式，会保持原值（可能是旧的明文）
     if (config.clientSecret) {
-        try {
-            const decrypted = await cryptoUtils.decrypt(config.clientSecret);
-            elements.clientSecret.value = decrypted;
-        } catch (error) {
-            console.error('解密Client Secret失败:', error);
-            elements.clientSecret.value = '';
-        }
+        // 直接使用配置中的值（可能是已解密的明文，也可能是旧的明文格式）
+        elements.clientSecret.value = config.clientSecret;
+        
+        // 如果看起来像是加密格式但getConfig没有解密成功，可能是损坏的数据
+        // 这里不再尝试解密，因为getConfig已经处理过了
+        // 如果确实是损坏的加密数据，用户需要重新输入
     }
 }
 

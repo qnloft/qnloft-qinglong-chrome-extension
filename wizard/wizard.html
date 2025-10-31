@@ -77,17 +77,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 跳过选项 -->
-                    <div class="skip-section">
-                        <p class="skip-text">已有配置或想稍后设置？</p>
-                        <button id="skipWizardBtn" class="btn btn-outline">
-                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 18l6-6-6-6"/>
-                            </svg>
-                            跳过向导
-                        </button>
-                    </div>
                 </div>
             </div>
 
@@ -115,7 +104,7 @@
                         <label class="form-label">Client Secret *</label>
                         <input type="password" id="clientSecret" class="form-input" 
                                placeholder="请输入Client Secret" required>
-                        <span class="form-hint">此信息将加密存储</span>
+                        <span class="form-hint">此信息将加密存储于浏览器本地，放心填写！</span>
                     </div>
 
                     <div class="form-actions">
@@ -220,24 +209,34 @@
 
         <!-- 导航按钮 -->
         <div class="wizard-nav">
-            <button id="prevBtn" class="btn btn-secondary" style="visibility: hidden;">
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-                上一步
-            </button>
-            <button id="nextBtn" class="btn btn-primary">
-                下一步
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </button>
-            <button id="finishBtn" class="btn btn-success hidden">
-                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                完成配置
-            </button>
+            <div class="wizard-nav-left">
+                <button id="skipWizardBtn" class="btn btn-link">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    跳过向导
+                </button>
+                <button id="prevBtn" class="btn btn-secondary" style="visibility: hidden;">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    上一步
+                </button>
+            </div>
+            <div class="wizard-nav-right">
+                <button id="nextBtn" class="btn btn-primary">
+                    下一步
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button id="finishBtn" class="btn btn-success hidden">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    完成配置
+                </button>
+            </div>
         </div>
     </div>
 

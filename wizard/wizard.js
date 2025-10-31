@@ -86,26 +86,52 @@ function init() {
  */
 function bindEvents() {
     // 导航按钮
-    elements.prevBtn.addEventListener('click', () => goToStep(currentStep - 1));
-    elements.nextBtn.addEventListener('click', handleNext);
-    elements.finishBtn.addEventListener('click', handleFinish);
+    if (elements.prevBtn) {
+        elements.prevBtn.addEventListener('click', () => goToStep(currentStep - 1));
+    }
+    if (elements.nextBtn) {
+        elements.nextBtn.addEventListener('click', handleNext);
+    }
+    if (elements.finishBtn) {
+        elements.finishBtn.addEventListener('click', handleFinish);
+    }
     
     // 跳过向导
-    elements.skipWizardBtn.addEventListener('click', handleSkipWizard);
+    if (elements.skipWizardBtn) {
+        elements.skipWizardBtn.addEventListener('click', handleSkipWizard);
+    }
     
     // 测试连接
-    elements.testConnectionBtn.addEventListener('click', handleTestConnection);
+    if (elements.testConnectionBtn) {
+        elements.testConnectionBtn.addEventListener('click', handleTestConnection);
+    }
     
     // 表单输入监听
-    elements.qlUrl.addEventListener('input', updateQinglongData);
-    elements.clientId.addEventListener('input', updateQinglongData);
-    elements.clientSecret.addEventListener('input', updateQinglongData);
+    if (elements.qlUrl) {
+        elements.qlUrl.addEventListener('input', updateQinglongData);
+    }
+    if (elements.clientId) {
+        elements.clientId.addEventListener('input', updateQinglongData);
+    }
+    if (elements.clientSecret) {
+        elements.clientSecret.addEventListener('input', updateQinglongData);
+    }
     
-    elements.siteName.addEventListener('input', updateSiteData);
-    elements.siteUrl.addEventListener('input', updateSiteData);
-    elements.envName.addEventListener('input', updateSiteData);
-    elements.siteEnabled.addEventListener('change', updateSiteData);
-    elements.autoSync.addEventListener('change', updateSiteData);
+    if (elements.siteName) {
+        elements.siteName.addEventListener('input', updateSiteData);
+    }
+    if (elements.siteUrl) {
+        elements.siteUrl.addEventListener('input', updateSiteData);
+    }
+    if (elements.envName) {
+        elements.envName.addEventListener('input', updateSiteData);
+    }
+    if (elements.siteEnabled) {
+        elements.siteEnabled.addEventListener('change', updateSiteData);
+    }
+    if (elements.autoSync) {
+        elements.autoSync.addEventListener('change', updateSiteData);
+    }
 }
 
 /**
@@ -148,19 +174,38 @@ function goToStep(step) {
  */
 function updateNavButtons() {
     // 上一步按钮
-    if (currentStep === 1) {
-        elements.prevBtn.style.visibility = 'hidden';
-    } else {
-        elements.prevBtn.style.visibility = 'visible';
+    if (elements.prevBtn) {
+        if (currentStep === 1) {
+            elements.prevBtn.style.visibility = 'hidden';
+        } else {
+            elements.prevBtn.style.visibility = 'visible';
+        }
+    }
+    
+    // 跳过向导按钮（只在第一步显示）
+    if (elements.skipWizardBtn) {
+        if (currentStep === 1) {
+            elements.skipWizardBtn.style.display = 'inline-flex';
+        } else {
+            elements.skipWizardBtn.style.display = 'none';
+        }
     }
     
     // 下一步/完成按钮
     if (currentStep === totalSteps) {
-        elements.nextBtn.classList.add('hidden');
-        elements.finishBtn.classList.remove('hidden');
+        if (elements.nextBtn) {
+            elements.nextBtn.classList.add('hidden');
+        }
+        if (elements.finishBtn) {
+            elements.finishBtn.classList.remove('hidden');
+        }
     } else {
-        elements.nextBtn.classList.remove('hidden');
-        elements.finishBtn.classList.add('hidden');
+        if (elements.nextBtn) {
+            elements.nextBtn.classList.remove('hidden');
+        }
+        if (elements.finishBtn) {
+            elements.finishBtn.classList.add('hidden');
+        }
     }
 }
 
