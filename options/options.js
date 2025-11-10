@@ -674,13 +674,16 @@ function showSiteModal(siteId = null) {
                             <label class="form-label">目标URL *</label>
                             <input type="url" id="siteUrl" class="form-input" 
                                    value="${site ? escapeHtml(site.url) : ''}" 
-                                   placeholder="https://example.com" required>
+                                   placeholder="https://example.com" required list="historyUrls">
+                            <datalist id="historyUrls"></datalist>
+                            <span class="form-hint">可直接选择最近访问过的URL</span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">环境变量名称 *</label>
-                            <input type="text" id="siteEnvName" class="form-input" 
-                                   value="${site ? escapeHtml(site.envName) : ''}" 
-                                   placeholder="例如: JD_COOKIE" required>
+                            <select id="siteEnvName" class="form-input" required>
+                                <option value="" disabled ${site && site.envName ? '' : 'selected'}>请选择环境变量名称</option>
+                            </select>
+                            <span class="form-hint">列表显示青龙环境变量的名称与部分值；名称可能重复</span>
                         </div>
                         <div class="form-group">
                             <div class="switch-group">
@@ -721,6 +724,16 @@ function showSiteModal(siteId = null) {
         const siteId = saveBtn.getAttribute('data-site-id');
         await saveSiteHandler(siteId);
     }, '.btn-modal-save-site');
+
+    // 填充历史URL建议
+    populateHistoryUrlDatalist('historyUrls').catch(err => {
+        console.warn('加载历史URL失败:', err);
+    });
+
+    // 填充环境变量下拉
+    populateEnvNameSelect(site?.envName || '').catch(err => {
+        console.warn('加载环境变量列表失败:', err);
+    });
 }
 
 /**
@@ -729,7 +742,8 @@ function showSiteModal(siteId = null) {
 async function saveSiteHandler(siteId) {
     const name = document.getElementById('siteName').value.trim();
     const url = document.getElementById('siteUrl').value.trim();
-    const envName = document.getElementById('siteEnvName').value.trim();
+    const envNameEl = document.getElementById('siteEnvName');
+    const envName = (envNameEl?.value || '').trim();
     const enabled = document.getElementById('siteEnabled').checked;
     const autoSync = document.getElementById('siteAutoSync').checked;
     
@@ -1873,6 +1887,113 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+/**
+ * 填充环境变量下拉选项
+ * @param {string} preselectedName 预选的环境变量名
+ */
+async function populateEnvNameSelect(preselectedName = '') {
+    const select = document.getElementById('siteEnvName');
+    if (!select) return;
+
+    // 获取环境变量列表（使用缓存即可）
+    const response = await sendMessage({
+        action: MESSAGE_TYPES.GET_ENVS,
+        useCache: true
+    });
+
+    if (!response?.success) {
+        return;
+    }
+
+    /** @type {Array<{id:number,name:string,value:string,remarks?:string,status?:number}>} */
+    const envList = Array.isArray(response.data) ? response.data : [];
+
+    // 直接列出所有环境变量项（名称可能重复），选项 value 使用 name，显示“名称 — 值(前32位)”
+    // 这样即便名称重复，用户仍能通过值辨识
+    const truncate = (str, n = 32) => {
+        if (!str) return '';
+        return str.length > n ? `${str.slice(0, n)}…` : str;
+    };
+
+    // 保留第一个默认提示项
+    const preservedFirstOption = select.querySelector('option[value=""]');
+    select.innerHTML = '';
+    if (preservedFirstOption) {
+        select.appendChild(preservedFirstOption);
+    } else {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.disabled = true;
+        opt.selected = !preselectedName;
+        opt.textContent = '请选择环境变量名称';
+        select.appendChild(opt);
+    }
+
+    envList.forEach(env => {
+        const opt = document.createElement('option');
+        opt.value = env.name;
+        opt.textContent = `${env.name} — ${truncate(env.value)}`;
+        if (preselectedName && env.name === preselectedName) {
+            opt.selected = true;
+        }
+        select.appendChild(opt);
+    });
+}
+
+/**
+ * 从浏览器历史记录加载最近的URL并填充到 datalist
+ * @param {string} datalistId 
+ */
+async function populateHistoryUrlDatalist(datalistId) {
+    const datalist = document.getElementById(datalistId);
+    if (!datalist) return;
+
+    // 包装 chrome.history.search 为 Promise
+    function searchHistory(query) {
+        return new Promise((resolve, reject) => {
+            try {
+                chrome.history.search(query, (results) => {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError);
+                    } else {
+                        resolve(results || []);
+                    }
+                });
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
+
+    // 读取最近 30 天的访问记录，最多 200 条
+    const startTime = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const results = await searchHistory({ text: '', startTime, maxResults: 200 });
+
+    // 提取 URL，过滤扩展页/内部页，去重（按 origin 或完整URL去重，这里优先 origin）
+    const urlSet = new Set();
+    const options = [];
+
+    for (const item of results) {
+        const url = item.url || '';
+        if (!url.startsWith('http://') && !url.startsWith('https://')) continue;
+        try {
+            const u = new URL(url);
+            // 使用 origin 去重，但将一个示例完整URL作为建议
+            const origin = u.origin;
+            if (!urlSet.has(origin)) {
+                urlSet.add(origin);
+                options.push(origin);
+            }
+        } catch (_) {
+            // ignore parse errors
+        }
+        if (options.length >= 50) break;
+    }
+
+    // 回填到 datalist
+    datalist.innerHTML = options.map(u => `<option value="${escapeHtml(u)}"></option>`).join('');
 }
 
 // 页面加载时初始化

@@ -14,7 +14,8 @@
     "alarms",
     "notifications",
     "tabs",
-    "contextMenus"
+    "contextMenus",
+    "history"
   ],
   "host_permissions": [
     "<all_urls>"

@@ -1,3 +1,23 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## v1.0.1 (2025-11-10)
+
+### Added
+- Site form: Environment variable name is now a dropdown populated from Qinglong envs.
+  - Options display as “name — value prefix” to help distinguish duplicate names.
+- Site form: Target URL field supports browser history suggestions for faster input.
+
+### Changed
+- Improved UX in the website configuration modal for quicker and less error-prone setup.
+
+### Notes
+- Ensure the required environment variables exist in Qinglong; the extension auto-loads them for selection.
+
+## v1.0.0 (2024-01-01)
+- Initial release with multi-site cookie auto-sync, full env management, setup wizard, encrypted storage, and logging system.
+
 # 更新日志
 
 本文档记录 qnloft-青龙助手 的所有重要变更。
