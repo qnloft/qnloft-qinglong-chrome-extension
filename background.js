@@ -724,7 +724,16 @@ async function syncSite(site) {
         };
 
     } catch (error) {
-        console.error(`${site.name} 同步失败:`, error);
+        // 提取错误信息
+        const errorMessage = error?.message || error?.toString() || '未知错误';
+        const errorStack = error?.stack || '';
+        
+        // 记录完整错误信息到控制台（用于调试）
+        console.error(`[同步失败] ${site.name}:`, errorMessage);
+        if (errorStack) {
+            console.error('错误堆栈:', errorStack);
+        }
+        console.error('完整错误对象:', error);
 
         // 更新网站配置
         await storageManager.updateSite(site.id, {
@@ -733,18 +742,18 @@ async function syncSite(site) {
         });
 
         // 记录日志
-        await logger.logError(site.id, site.name, error.message);
+        await logger.logError(site.id, site.name, errorMessage);
 
         // 显示通知
         await showNotification(
             `${site.name} 同步失败`,
-            error.message,
+            errorMessage,
             'error'
         );
 
         return {
             success: false,
-            message: error.message
+            message: errorMessage
         };
     }
 }
