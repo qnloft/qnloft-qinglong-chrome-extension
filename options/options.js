@@ -2,7 +2,7 @@
 
 import { storageManager } from '../lib/storage-manager.js';
 import { cryptoUtils } from '../lib/crypto-utils.js';
-import { MESSAGE_TYPES } from '../lib/constants.js';
+import { MESSAGE_TYPES, APP_VERSION } from '../lib/constants.js';
 
 // 当前标签页
 let currentTab = 'qinglong';
@@ -26,6 +26,12 @@ let elements = {};
  */
 async function init() {
     console.log('Options 页面初始化...');
+    
+    // 设置版本号显示
+    const versionElement = document.getElementById('appVersion');
+    if (versionElement) {
+        versionElement.textContent = `v${APP_VERSION}`;
+    }
     
     // 初始化DOM元素
     initElements();
