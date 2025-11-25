@@ -1893,3 +1893,153 @@ input:checked + .slider:before {
     }
 }
 
+/* Checkbox Group Styles */
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.checkbox-item:hover {
+    background-color: rgba(102, 187, 106, 0.05);
+}
+
+.checkbox-item input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkmark {
+    background-color: #66BB6A;
+    border-color: #66BB6A;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-text {
+    font-size: 14px;
+    color: #333;
+    user-select: none;
+}
+
+.card-desc {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Import Result Styles */
+.import-summary {
+    margin-top: 16px;
+}
+
+.import-summary h4 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.import-summary .success-items,
+.import-summary .skipped-items,
+.import-summary .failed-items {
+    margin-bottom: 12px;
+}
+
+.import-summary .success-items strong {
+    color: #4CAF50;
+}
+
+.import-summary .skipped-items strong {
+    color: #FF9800;
+}
+
+.import-summary .failed-items strong {
+    color: #F44336;
+}
+
+.import-summary ul {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+}
+
+.import-summary li {
+    margin-bottom: 4px;
+    font-size: 13px;
+    color: #666;
+}
+
+
+/* 导出配置提示框样式 */
+.export-hint-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+    border: 2px solid #2196F3;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.15);
+    animation: hintSlideIn 0.3s ease-out;
+}
+
+@keyframes hintSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.export-hint-box .hint-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: #1976D2;
+    margin-top: 2px;
+}
+
+.export-hint-box .hint-content {
+    flex: 1;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #0D47A1;
+}
+
+.export-hint-box .hint-content strong {
+    color: #1565C0;
+    font-weight: 600;
+}
+

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>qnloft-青龙助手 - 设置</title>
     <link rel="stylesheet" href="options.css">
 </head>
+
 <body>
     <div class="container">
         <!-- 侧边栏 -->
@@ -14,45 +16,55 @@
                 <h1 class="logo-title">qnloft-青龙助手</h1>
                 <p class="logo-subtitle">设置与管理</p>
             </div>
-            
+
             <nav class="nav">
                 <a href="#qinglong" class="nav-item active" data-tab="qinglong">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                     </svg>
                     <span class="nav-text">青龙面板</span>
                 </a>
                 <a href="#sites" class="nav-item" data-tab="sites">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="2" y1="12" x2="22" y2="12"/>
-                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="2" y1="12" x2="22" y2="12" />
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                     </svg>
                     <span class="nav-text">网站配置</span>
                 </a>
                 <a href="#envs" class="nav-item" data-tab="envs">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
-                        <path d="M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/>
-                        <line x1="9" y1="12" x2="15" y2="12"/>
-                        <line x1="9" y1="16" x2="15" y2="16"/>
+                        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+                        <path d="M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />
+                        <line x1="9" y1="12" x2="15" y2="12" />
+                        <line x1="9" y1="16" x2="15" y2="16" />
                     </svg>
                     <span class="nav-text">环境变量</span>
                 </a>
                 <a href="#sync" class="nav-item" data-tab="sync">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M12 1v6m0 6v6m-9-9h6m6 0h6m-2.7-6.6 4.2-4.2M4.5 4.5l4.2 4.2m8.6 8.6 4.2 4.2M4.5 19.5l4.2-4.2"/>
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M12 1v6m0 6v6m-9-9h6m6 0h6m-2.7-6.6 4.2-4.2M4.5 4.5l4.2 4.2m8.6 8.6 4.2 4.2M4.5 19.5l4.2-4.2" />
                     </svg>
                     <span class="nav-text">同步设置</span>
                 </a>
                 <a href="#logs" class="nav-item" data-tab="logs">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 3v18h18"/>
-                        <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+                        <path d="M3 3v18h18" />
+                        <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
                     </svg>
                     <span class="nav-text">同步日志</span>
+                </a>
+                <a href="#migration" class="nav-item" data-tab="migration">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span class="nav-text">配置迁移</span>
                 </a>
                 <!-- <a href="#security" class="nav-item" data-tab="security">
                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -81,45 +93,48 @@
                     <form id="qinglongForm" class="form">
                         <div class="form-group">
                             <label class="form-label">青龙面板URL *</label>
-                            <input type="url" id="qlUrl" class="form-input" 
-                                   placeholder="https://your-qinglong-panel.com" required>
+                            <input type="url" id="qlUrl" class="form-input"
+                                placeholder="https://your-qinglong-panel.com" required>
                             <span class="form-hint">例如: http://192.168.1.100:5700</span>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Client ID *</label>
-                            <input type="text" id="clientId" class="form-input" 
-                                   placeholder="请输入Client ID" required>
+                            <input type="text" id="clientId" class="form-input" placeholder="请输入Client ID" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Client Secret *</label>
-                            <input type="password" id="clientSecret" class="form-input" 
-                                   placeholder="请输入Client Secret" required>
+                            <input type="password" id="clientSecret" class="form-input" placeholder="请输入Client Secret"
+                                required>
                             <span class="form-hint">此信息将加密存储于浏览器本地，放心填写！</span>
                         </div>
 
                         <div class="form-actions">
                             <button type="button" id="openQlPanelBtn" class="btn btn-success">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <line x1="2" y1="12" x2="22" y2="12"/>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="2" y1="12" x2="22" y2="12" />
+                                    <path
+                                        d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                                 </svg>
                                 访问青龙
                             </button>
                             <button type="button" id="testConnectionBtn" class="btn btn-secondary">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="11" cy="11" r="8"/>
-                                    <path d="m21 21-4.35-4.35"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.35-4.35" />
                                 </svg>
                                 测试连接
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                                    <polyline points="17 21 17 13 7 13 7 21"/>
-                                    <polyline points="7 3 7 8 15 8"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                    <polyline points="17 21 17 13 7 13 7 21" />
+                                    <polyline points="7 3 7 8 15 8" />
                                 </svg>
                                 保存配置
                             </button>
@@ -137,7 +152,7 @@
                     <p class="section-description">添加和管理需要同步Cookie的网站</p>
                     <button id="addSiteBtn" class="btn btn-primary btn-sm">
                         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14m-7-7h14"/>
+                            <path d="M12 5v14m-7-7h14" />
                         </svg>
                         添加网站
                     </button>
@@ -160,8 +175,7 @@
                 <div class="card">
                     <div class="toolbar">
                         <div class="toolbar-left">
-                            <input type="text" id="envSearch" class="search-input" 
-                                   placeholder="搜索环境变量名称或备注...">
+                            <input type="text" id="envSearch" class="search-input" placeholder="搜索环境变量名称或备注...">
                             <select id="envFilter" class="select">
                                 <option value="all">全部</option>
                                 <option value="enabled">已启用</option>
@@ -175,14 +189,17 @@
                         </div>
                         <div class="toolbar-right">
                             <button id="refreshEnvsBtn" class="btn btn-secondary btn-sm">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
                                 </svg>
                                 刷新
                             </button>
                             <button id="addEnvBtn" class="btn btn-primary btn-sm">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 5v14m-7-7h14"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 5v14m-7-7h14" />
                                 </svg>
                                 添加
                             </button>
@@ -226,17 +243,17 @@
 
                         <div class="form-group">
                             <label class="form-label">同步间隔（分钟）</label>
-                            <input type="number" id="syncInterval" class="form-input" 
-                                   min="1" max="1440" value="60">
+                            <input type="number" id="syncInterval" class="form-input" min="1" max="1440" value="60">
                             <span class="form-hint">最小1分钟，最大1440分钟（24小时）</span>
                         </div>
 
                         <div class="form-actions">
                             <button type="submit" class="btn btn-primary">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                                    <polyline points="17 21 17 13 7 13 7 21"/>
-                                    <polyline points="7 3 7 8 15 8"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                    <polyline points="17 21 17 13 7 13 7 21" />
+                                    <polyline points="7 3 7 8 15 8" />
                                 </svg>
                                 保存设置
                             </button>
@@ -252,8 +269,8 @@
                     <p class="section-description">查看Cookie同步历史记录</p>
                     <button id="clearLogsBtn" class="btn btn-danger btn-sm">
                         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"/>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                         </svg>
                         清除日志
                     </button>
@@ -285,6 +302,101 @@
                 </div>
             </section>
 
+            <!-- 配置迁移 -->
+            <section id="migration-section" class="section">
+                <header class="section-header">
+                    <h2 class="section-title">配置迁移</h2>
+                    <p class="section-description">导出和导入青龙面板配置</p>
+                </header>
+
+                <div class="card">
+                    <h3 class="card-title">导出配置</h3>
+                    <p class="card-desc">选择要导出的配置类型，导出结果为JSON文件</p>
+
+                    <div class="form-group">
+                        <label class="form-label">选择导出内容</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="exportSubscriptions" checked>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">订阅配置</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="exportEnvs" checked>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">环境变量</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="exportConfigFiles" checked>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">配置文件</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="exportDependencies" checked>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">项目依赖</span>
+                            </label>
+                        </div>
+                        <div class="export-hint-box">
+                            <div class="hint-content">
+                                <strong>💡 提示：</strong>此处仅导出重要数据配置。如需完整备份（包括定时任务、日志等），请前往 <strong
+                                    style="color: #1976D2;">青龙面板 → 系统设置 → 其他设置 → 数据备份还原</strong> 进行操作
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="exportConfigBtn" class="btn btn-primary">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                            导出配置
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">导入配置</h3>
+                    <p class="card-desc">从之前导出的JSON文件导入配置</p>
+
+                    <div class="form-group">
+                        <label class="form-label">选择导入文件</label>
+                        <input type="file" id="importConfigFile" accept=".json" class="form-input">
+                        <span class="form-hint">请选择之前导出的配置JSON文件</span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="switch-group">
+                            <label class="switch">
+                                <input type="checkbox" id="importOverwrite">
+                                <span class="slider"></span>
+                            </label>
+                            <div class="switch-label">
+                                <span class="switch-title">覆盖现有配置</span>
+                                <span class="switch-desc">开启后会覆盖同名的现有配置</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="importConfigBtn" class="btn btn-success">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" y1="3" x2="12" y2="15" />
+                            </svg>
+                            导入配置
+                        </button>
+                    </div>
+
+                    <div id="importResult" class="alert hidden"></div>
+                </div>
+            </section>
+
             <!-- 安全设置 -->
             <section id="security-section" class="section">
                 <header class="section-header">
@@ -294,18 +406,19 @@
 
                 <div class="card">
                     <h3 class="card-title">配置管理</h3>
-                    
+
                     <div class="action-group">
                         <div class="action-item">
                             <div class="action-info">
                                 <h4 class="action-title">导出配置</h4>
                                 <p class="action-desc">导出网站配置和设置（不包含敏感信息）</p>
                             </div>
-                            <button id="exportConfigBtn" class="btn btn-secondary">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                    <polyline points="7 10 12 15 17 10"/>
-                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                            <button id="exportExtensionConfigBtn" class="btn btn-secondary">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
                                 </svg>
                                 导出
                             </button>
@@ -316,11 +429,12 @@
                                 <h4 class="action-title">导入配置</h4>
                                 <p class="action-desc">从文件导入配置</p>
                             </div>
-                            <button id="importConfigBtn" class="btn btn-secondary">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                    <polyline points="17 8 12 3 7 8"/>
-                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                            <button id="importExtensionConfigBtn" class="btn btn-secondary">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="17 8 12 3 7 8" />
+                                    <line x1="12" y1="3" x2="12" y2="15" />
                                 </svg>
                                 导入
                             </button>
@@ -333,11 +447,13 @@
                                 <p class="action-desc warning">⚠️ 此操作不可恢复，请谨慎操作</p>
                             </div>
                             <button id="clearAllBtn" class="btn btn-danger">
-                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="3 6 5 6 21 6"/>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                                    <line x1="10" y1="11" x2="10" y2="17"/>
-                                    <line x1="14" y1="11" x2="14" y2="17"/>
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6" />
+                                    <path
+                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                    <line x1="10" y1="11" x2="10" y2="17" />
+                                    <line x1="14" y1="11" x2="14" y2="17" />
                                 </svg>
                                 清除
                             </button>
@@ -364,5 +480,5 @@
 
     <script src="options.js" type="module"></script>
 </body>
-</html>
 
+</html>

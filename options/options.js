@@ -91,10 +91,19 @@ function initElements() {
         logsContainer: document.getElementById('logsContainer'),
         
         // 安全设置
-        exportConfigBtn: document.getElementById('exportConfigBtn'),
-        importConfigBtn: document.getElementById('importConfigBtn'),
+        exportExtensionConfigBtn: document.getElementById('exportExtensionConfigBtn'),
+        importExtensionConfigBtn: document.getElementById('importExtensionConfigBtn'),
         importFileInput: document.getElementById('importFileInput'),
         clearAllBtn: document.getElementById('clearAllBtn'),
+        
+        // 配置迁移
+        exportSubscriptions: document.getElementById('exportSubscriptions'),
+        exportEnvs: document.getElementById('exportEnvs'),
+        exportConfigFiles: document.getElementById('exportConfigFiles'),
+        exportDependencies: document.getElementById('exportDependencies'),
+        importConfigFile: document.getElementById('importConfigFile'),
+        importOverwrite: document.getElementById('importOverwrite'),
+        importResult: document.getElementById('importResult'),
         
         // 通用
         modalContainer: document.getElementById('modalContainer'),
@@ -142,10 +151,21 @@ function bindEvents() {
     elements.clearLogsBtn.addEventListener('click', handleClearLogs);
     
     // 安全设置
-    elements.exportConfigBtn.addEventListener('click', handleExportConfig);
-    elements.importConfigBtn.addEventListener('click', () => elements.importFileInput.click());
+    elements.exportExtensionConfigBtn.addEventListener('click', handleExportConfig);
+    elements.importExtensionConfigBtn.addEventListener('click', () => elements.importFileInput.click());
     elements.importFileInput.addEventListener('change', handleImportConfig);
     elements.clearAllBtn.addEventListener('click', handleClearAll);
+    
+    // 配置迁移
+    const migrationExportBtn = document.querySelector('#migration-section #exportConfigBtn');
+    const migrationImportBtn = document.querySelector('#migration-section #importConfigBtn');
+    
+    if (migrationExportBtn) {
+        migrationExportBtn.addEventListener('click', handleQinglongExportConfig);
+    }
+    if (migrationImportBtn) {
+        migrationImportBtn.addEventListener('click', handleQinglongImportConfig);
+    }
     
     // 监听hash变化
     window.addEventListener('hashchange', handleHash);
@@ -1678,7 +1698,7 @@ async function handleExportConfig() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `qinglong-sync-config-${Date.now()}.json`;
+        a.download = `extension-config-${Date.now()}.json`;
         a.click();
         URL.revokeObjectURL(url);
         
@@ -2323,5 +2343,158 @@ function initCookieSelection(siteId) {
 
     // 初始化状态
     updateSelectionState();
+}
+
+// ========== 配置迁移 ==========
+
+/**
+ * 导出青龙面板配置
+ */
+async function handleQinglongExportConfig() {
+    try {
+        showLoading(true, '正在导出配置...');
+        
+        // 获取导出选项
+        const exportOptions = {
+            includeSubscriptions: elements.exportSubscriptions.checked,
+            includeEnvs: elements.exportEnvs.checked,
+            includeConfigFiles: elements.exportConfigFiles.checked,
+            includeDependencies: elements.exportDependencies.checked
+        };
+
+        // 检查是否至少选择了一项
+        const hasSelection = Object.values(exportOptions).some(value => value === true);
+        if (!hasSelection) {
+            showToast('请至少选择一项要导出的配置');
+            return;
+        }
+
+        // 发送导出请求
+        const response = await sendMessage({
+            action: MESSAGE_TYPES.EXPORT_CONFIG,
+            options: exportOptions
+        });
+
+        if (response.success) {
+            // 创建下载
+            const blob = new Blob([JSON.stringify(response.data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `qinglong-config-export-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('配置导出成功');
+        } else {
+            showToast(response.message || '导出失败');
+        }
+        
+    } catch (error) {
+        console.error('导出配置失败:', error);
+        showToast('导出失败：' + error.message);
+    } finally {
+        showLoading(false);
+    }
+}
+
+/**
+ * 导入青龙面板配置
+ */
+async function handleQinglongImportConfig() {
+    const file = elements.importConfigFile.files[0];
+    if (!file) {
+        showToast('请选择要导入的配置文件');
+        return;
+    }
+
+    try {
+        showLoading(true, '正在导入配置...');
+        
+        // 隐藏之前的结果
+        elements.importResult.classList.add('hidden');
+        
+        // 读取文件内容
+        const text = await file.text();
+        const configData = JSON.parse(text);
+
+        // 验证文件格式
+        if (!configData || !configData.data) {
+            throw new Error('无效的配置文件格式');
+        }
+
+        // 获取导入选项
+        const importOptions = {
+            overwrite: elements.importOverwrite.checked
+        };
+
+        // 发送导入请求
+        const response = await sendMessage({
+            action: MESSAGE_TYPES.IMPORT_CONFIG,
+            configData: configData,
+            options: importOptions
+        });
+
+        if (response.success) {
+            const result = response.result;
+            
+            // 显示导入结果
+            let resultHtml = '<div class="import-summary">';
+            resultHtml += `<h4>导入完成</h4>`;
+            
+            if (result.success.length > 0) {
+                resultHtml += `<div class="success-items"><strong>成功 (${result.success.length}):</strong><ul>`;
+                result.success.forEach(item => {
+                    resultHtml += `<li>${item.type} - ${item.name || item.action}</li>`;
+                });
+                resultHtml += '</ul></div>';
+            }
+            
+            if (result.skipped.length > 0) {
+                resultHtml += `<div class="skipped-items"><strong>跳过 (${result.skipped.length}):</strong><ul>`;
+                result.skipped.forEach(item => {
+                    resultHtml += `<li>${item.type} - ${item.name}: ${item.reason}</li>`;
+                });
+                resultHtml += '</ul></div>';
+            }
+            
+            if (result.failed.length > 0) {
+                resultHtml += `<div class="failed-items"><strong>失败 (${result.failed.length}):</strong><ul>`;
+                result.failed.forEach(item => {
+                    resultHtml += `<li>${item.type} - ${item.name}: ${item.error}</li>`;
+                });
+                resultHtml += '</ul></div>';
+            }
+            
+            resultHtml += '</div>';
+            
+            elements.importResult.innerHTML = resultHtml;
+            elements.importResult.classList.remove('hidden');
+            elements.importResult.className = 'alert alert-success';
+            
+            showToast('配置导入完成');
+            
+            // 刷新环境变量数据（如果导入了环境变量）
+            if (configData.data.environments) {
+                await loadEnvs(false);
+            }
+            
+        } else {
+            elements.importResult.innerHTML = `<strong>导入失败:</strong> ${response.message}`;
+            elements.importResult.classList.remove('hidden');
+            elements.importResult.className = 'alert alert-error';
+        }
+        
+    } catch (error) {
+        console.error('导入配置失败:', error);
+        const errorMessage = error instanceof SyntaxError ? '文件格式错误，请选择有效的JSON文件' : error.message;
+        elements.importResult.innerHTML = `<strong>导入失败:</strong> ${errorMessage}`;
+        elements.importResult.classList.remove('hidden');
+        elements.importResult.className = 'alert alert-error';
+    } finally {
+        showLoading(false);
+        // 清空文件选择
+        elements.importConfigFile.value = '';
+    }
 }
 

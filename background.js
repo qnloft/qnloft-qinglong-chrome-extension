@@ -284,6 +284,12 @@ async function handleMessage(request, sender) {
         case MESSAGE_TYPES.DELETE_COOKIES:
             return await handleDeleteCookies(request.siteId);
 
+        case MESSAGE_TYPES.EXPORT_CONFIG:
+            return await handleExportConfig(request.options);
+
+        case MESSAGE_TYPES.IMPORT_CONFIG:
+            return await handleImportConfig(request.configData, request.options);
+
         default:
             throw new Error(`未知的操作: ${request.action}`);
     }
@@ -1027,6 +1033,95 @@ async function handleDeleteCookies(siteId) {
             'error'
         );
 
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+/**
+ * 处理：导出青龙面板配置
+ */
+async function handleExportConfig(options = {}) {
+    try {
+        console.log('开始导出青龙面板配置，选项:', options);
+        
+        // 调用API导出配置
+        const exportData = await qinglongAPI.exportConfig(options);
+        
+        console.log('配置导出成功');
+        
+        return {
+            success: true,
+            message: '配置导出成功',
+            data: exportData
+        };
+        
+    } catch (error) {
+        console.error('导出配置失败:', error);
+        
+        // 显示通知
+        await showNotification(
+            '导出配置失败',
+            error.message,
+            'error'
+        );
+        
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+/**
+ * 处理：导入青龙面板配置
+ */
+async function handleImportConfig(configData, options = {}) {
+    try {
+        console.log('开始导入青龙面板配置');
+        
+        // 调用API导入配置
+        const importResult = await qinglongAPI.importConfig(configData, options);
+        
+        console.log('配置导入完成:', importResult);
+        
+        // 显示通知
+        const successCount = importResult.success.length;
+        const failedCount = importResult.failed.length;
+        const skippedCount = importResult.skipped.length;
+        
+        let notificationMessage = `导入完成: 成功 ${successCount} 项`;
+        if (skippedCount > 0) {
+            notificationMessage += `, 跳过 ${skippedCount} 项`;
+        }
+        if (failedCount > 0) {
+            notificationMessage += `, 失败 ${failedCount} 项`;
+        }
+        
+        await showNotification(
+            '配置导入完成',
+            notificationMessage,
+            failedCount > 0 ? 'warning' : 'success'
+        );
+        
+        return {
+            success: true,
+            message: '配置导入完成',
+            result: importResult
+        };
+        
+    } catch (error) {
+        console.error('导入配置失败:', error);
+        
+        // 显示通知
+        await showNotification(
+            '导入配置失败',
+            error.message,
+            'error'
+        );
+        
         return {
             success: false,
             message: error.message
